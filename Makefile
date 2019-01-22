@@ -15,3 +15,8 @@ setup_dependencies:
 	git clone https://github.com/krosenfeld/slimscat.git
 	cd slimscat; python setup.py install 
 	rm -rf slimscat
+
+docker:
+	docker build -t griffinfoster/fundamentals_of_interferometry .
+	docker run -tiP griffinfoster/fundamentals_of_interferometry \
+		jupyter-notebook --ip 0.0.0.0  --notebook-dir=/notebooks --no-browser --allow-root 

@@ -1,34 +1,17 @@
-FROM radioastro/python
+FROM kernsuite/base:5
 
-MAINTAINER gijs@pythonic.nl
+RUN docker-apt-install \
+    python-numpy \
+    python-matplotlib \
+    python-scipy \
+    python-astropy \
+    python-aplpy \
+    python-healpy \
+    python-ephem \
+    jupyter-notebook
 
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-    libpng-dev \
-    libncurses5-dev \
-    pkg-config \
-    libfreetype6-dev \
-    libblas-dev \
-    liblapack-dev \
-    libatlas-base-dev \
-    gfortran \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt /
-
-RUN pip install numpy==1.10.1
-
-RUN pip install -r /requirements.txt
-
-COPY . /notebooks
-
-RUN useradd notebook -m
-
-RUN chown -R notebook /notebooks
-
-EXPOSE 8888
+ADD . /notebooks
 
 WORKDIR /notebooks
-
-USER notebook
-
-CMD jupyter notebook --ip 0.0.0.0  --notebook-dir=/notebooks
+EXPOSE 8888
+#CMD jupyter-notebook --ip 0.0.0.0  --notebook-dir=/notebooks --no-browser --allow-root
